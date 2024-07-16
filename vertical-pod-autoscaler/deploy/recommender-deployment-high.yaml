@@ -3,13 +3,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: vpa-recommender
-  namespace: kube-system
+  namespace: cdc-data-flow
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vpa-recommender-performance
-  namespace: kube-system
+  namespace: cdc-data-flow
 spec:
   replicas: 1
   selector:

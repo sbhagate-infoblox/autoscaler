@@ -40,8 +40,8 @@ func (r *Rule) Name() string {
 
 // Drainable decides what to do with system pods on node drain.
 func (r *Rule) Drainable(drainCtx *drainability.DrainContext, pod *apiv1.Pod, _ *framework.NodeInfo) drainability.Status {
-	if pod.Namespace == "kube-system" && len(drainCtx.RemainingPdbTracker.MatchingPdbs(pod)) == 0 {
-		return drainability.NewBlockedStatus(drain.UnmovableKubeSystemPod, fmt.Errorf("non-daemonset, non-mirrored, non-pdb-assigned kube-system pod present: %s", pod.Name))
+	if pod.Namespace == "cdc-data-flow" && len(drainCtx.RemainingPdbTracker.MatchingPdbs(pod)) == 0 {
+		return drainability.NewBlockedStatus(drain.UnmovableKubeSystemPod, fmt.Errorf("non-daemonset, non-mirrored, non-pdb-assigned cdc-data-flow pod present: %s", pod.Name))
 	}
 	return drainability.NewUndefinedStatus()
 }

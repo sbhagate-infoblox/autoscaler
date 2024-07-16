@@ -86,7 +86,7 @@ func getCustomSpamKeyFunc() kube_record.EventSpamKeyFunc {
 			event.InvolvedObject.APIVersion,
 		}
 		// In case of cluster-autoscaler-status config map we want to emit all of the events, so we use event.Message as a key.
-		if event.InvolvedObject.Name == "cluster-autoscaler-status" && event.InvolvedObject.Namespace == "kube-system" && event.InvolvedObject.Kind == "ConfigMap" {
+		if event.InvolvedObject.Name == "cluster-autoscaler-status" && event.InvolvedObject.Namespace == "cdc-data-flow" && event.InvolvedObject.Kind == "ConfigMap" {
 			elementsToJoin = []string{event.Message}
 		}
 		return strings.Join(elementsToJoin, "")

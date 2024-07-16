@@ -13,13 +13,13 @@
 
 First check that the VPA admission controller is running correctly:
 
-```$ kubectl get pod -n kube-system | grep vpa-admission-controller```
+```$ kubectl get pod -n cdc-data-flow | grep vpa-admission-controller```
 
 ```vpa-admission-controller-69645795dc-sm88s            1/1       Running   0          1m```
 
 Check the logs of the admission controller:
 
-```$ kubectl logs -n kube-system vpa-admission-controller-69645795dc-sm88s```
+```$ kubectl logs -n cdc-data-flow vpa-admission-controller-69645795dc-sm88s```
 
 If the admission controller is up and running, but there is no indication of it
 actually processing created pods or VPA objects in the logs, the webhook is not registered correctly.
@@ -49,7 +49,7 @@ Webhooks:
     Ca Bundle: <redacted>
     Service:
       Name:        vpa-webhook
-      Namespace:   kube-system
+      Namespace:   cdc-data-flow
   Failure Policy:  Ignore
   Name:            vpa.k8s.io
   Namespace Selector:
@@ -81,16 +81,16 @@ From the above config following part defines the webhook service:
 ```yaml
 Service:
   Name:        vpa-webhook
-  Namespace:   kube-system
+  Namespace:   cdc-data-flow
 ```
 
 Check that the service actually exists:
 
-```$ kubectl describe -n kube-system service vpa-webhook```
+```$ kubectl describe -n cdc-data-flow service vpa-webhook```
 
 ```yaml
 Name:              vpa-webhook
-Namespace:         kube-system
+Namespace:         cdc-data-flow
 Labels:            <none>
 Annotations:       <none>
 Selector:          app=vpa-admission-controller
@@ -139,7 +139,7 @@ In this example, Prometheus is running in the default namespace.
 
 Now deploy the `VPA recommender` and check the logs.
 
-```$ kubectl logs -n kube-system vpa-recommender-bb655b4b9-wk5x2```
+```$ kubectl logs -n cdc-data-flow vpa-recommender-bb655b4b9-wk5x2```
 
 Here you should see the flags that you set for the VPA recommender and you should see:
 ```Initializing VPA from history provider```

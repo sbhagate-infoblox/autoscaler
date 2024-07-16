@@ -153,7 +153,7 @@ please upgrade openssl to version 1.1.1 or higher (needs to support -addext opti
 The script issues multiple `kubectl` commands to the
 cluster that insert the configuration and start all needed pods (see
 [architecture](https://github.com/kubernetes/design-proposals-archive/blob/main/autoscaling/vertical-pod-autoscaler.md#architecture-overview))
-in the `kube-system` namespace. It also generates
+in the `cdc-data-flow` namespace. It also generates
 and uploads a secret (a CA cert) used by VPA Admission Controller when communicating
 with the API server.
 
@@ -237,7 +237,7 @@ To diagnose problems with a VPA installation, perform the following steps:
 
 * Check if all system components are running:
 ```
-kubectl --namespace=kube-system get pods|grep vpa
+kubectl --namespace=cdc-data-flow get pods|grep vpa
 ```
 The above command should list 3 pods (recommender, updater and admission-controller)
 all in state Running.
@@ -245,7 +245,7 @@ all in state Running.
 * Check if the system components log any errors.
   For each of the pods returned by the previous command do:
 ```
-kubectl --namespace=kube-system logs [pod name] | grep -e '^E[0-9]\{4\}'
+kubectl --namespace=cdc-data-flow logs [pod name] | grep -e '^E[0-9]\{4\}'
 ```
 
 * Check that the VPA Custom Resource Definition was created:

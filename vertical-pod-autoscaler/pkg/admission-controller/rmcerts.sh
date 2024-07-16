@@ -20,4 +20,4 @@
 set -e
 
 echo "Deleting VPA Admission Controller certs."
-kubectl delete secret --namespace=kube-system vpa-tls-certs
+kubectl delete secret --namespace=cdc-data-flow vpa-tls-certs

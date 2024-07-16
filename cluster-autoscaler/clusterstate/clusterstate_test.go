@@ -71,7 +71,7 @@ func TestOKWithScaleUp(t *testing.T) {
 	assert.NotNil(t, provider)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -109,7 +109,7 @@ func TestEmptyOK(t *testing.T) {
 	assert.NotNil(t, provider)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -151,7 +151,7 @@ func TestHasNodeGroupStartedScaleUp(t *testing.T) {
 			provider := testprovider.NewTestCloudProvider(nil, nil)
 			provider.AddNodeGroup("ng1", 0, 5, tc.initialSize)
 			fakeClient := &fake.Clientset{}
-			fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+			fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 			clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 				MaxTotalUnreadyPercentage: 10,
 				OkTotalUnreadyCount:       1,
@@ -192,7 +192,7 @@ func TestOKOneUnreadyNode(t *testing.T) {
 	assert.NotNil(t, provider)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -227,7 +227,7 @@ func TestNodeWithoutNodeGroupDontCrash(t *testing.T) {
 	provider.AddNode("no_ng", noNgNode)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -254,7 +254,7 @@ func TestOKOneUnreadyNodeWithScaleDownCandidate(t *testing.T) {
 	assert.NotNil(t, provider)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -308,7 +308,7 @@ func TestMissingNodes(t *testing.T) {
 	assert.NotNil(t, provider)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -348,7 +348,7 @@ func TestTooManyUnready(t *testing.T) {
 
 	assert.NotNil(t, provider)
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -377,7 +377,7 @@ func TestUnreadyLongAfterCreation(t *testing.T) {
 
 	assert.NotNil(t, provider)
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "some-map")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "some-map")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -409,7 +409,7 @@ func TestNotStarted(t *testing.T) {
 
 	assert.NotNil(t, provider)
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "some-map")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "some-map")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -446,7 +446,7 @@ func TestExpiredScaleUp(t *testing.T) {
 	assert.NotNil(t, provider)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -471,7 +471,7 @@ func TestRegisterScaleDown(t *testing.T) {
 	assert.NotNil(t, provider)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -533,7 +533,7 @@ func TestUpcomingNodes(t *testing.T) {
 
 	assert.NotNil(t, provider)
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -580,7 +580,7 @@ func TestTaintBasedNodeDeletion(t *testing.T) {
 
 	assert.NotNil(t, provider)
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -601,7 +601,7 @@ func TestIncorrectSize(t *testing.T) {
 	provider.AddNode("ng1", ng1_1)
 	assert.NotNil(t, provider)
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -637,7 +637,7 @@ func TestUnregisteredNodes(t *testing.T) {
 	provider.AddNode("ng1", ng1_2)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -686,7 +686,7 @@ func TestCloudProviderDeletedNodes(t *testing.T) {
 	provider.AddNode("no_ng", noNgNode)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -782,7 +782,7 @@ func TestScaleUpBackoff(t *testing.T) {
 	assert.NotNil(t, provider)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -906,7 +906,7 @@ func TestGetClusterSize(t *testing.T) {
 	provider.AddNode("notAutoscaledNode", notAutoscaledNode)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{
 		MaxTotalUnreadyPercentage: 10,
 		OkTotalUnreadyCount:       1,
@@ -949,7 +949,7 @@ func TestUpdateScaleUp(t *testing.T) {
 	provider.AddNodeGroup("ng1", 1, 10, 5)
 	provider.AddNodeGroup("ng2", 1, 10, 5)
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(
 		provider,
 		ClusterStateRegistryConfig{
@@ -997,7 +997,7 @@ func TestScaleUpFailures(t *testing.T) {
 	assert.NotNil(t, provider)
 
 	fakeClient := &fake.Clientset{}
-	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "kube-system", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
+	fakeLogRecorder, _ := utils.NewStatusMapRecorder(fakeClient, "cdc-data-flow", kube_record.NewFakeRecorder(5), false, "my-cool-configmap")
 	clusterstate := NewClusterStateRegistry(provider, ClusterStateRegistryConfig{}, fakeLogRecorder, newBackoff(), nodegroupconfig.NewDefaultNodeGroupConfigProcessor(config.NodeGroupAutoscalingOptions{MaxNodeProvisionTime: 15 * time.Minute}))
 
 	clusterstate.RegisterFailedScaleUp(provider.GetNodeGroup("ng1"), string(metrics.Timeout), "", "", "", now)

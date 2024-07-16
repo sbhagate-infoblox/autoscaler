@@ -54,7 +54,7 @@ spec:
             - ./cluster-autoscaler
             - --cloud-provider={{ .Values.cloudProvider }}
           {{- if and (eq .Values.cloudProvider "clusterapi") (eq .Values.clusterAPIMode "kubeconfig-incluster") }}
-            - --namespace={{ .Values.clusterAPIConfigMapsNamespace | default "kube-system" }}
+            - --namespace={{ .Values.clusterAPIConfigMapsNamespace | default "cdc-data-flow" }}
           {{- else }}
             - --namespace={{ .Release.Namespace }}
           {{- end }}

@@ -32,7 +32,7 @@ const (
 
 const (
 	// PodSafeToEvictKey - annotation that ignores constraints to evict a pod like not being replicated, being on
-	// kube-system namespace or having a local storage.
+	// cdc-data-flow namespace or having a local storage.
 	PodSafeToEvictKey = "cluster-autoscaler.kubernetes.io/safe-to-evict"
 	// SafeToEvictLocalVolumesKey - annotation that ignores (doesn't block on) a local storage volume during node scale down
 	SafeToEvictLocalVolumesKey = "cluster-autoscaler.kubernetes.io/safe-to-evict-local-volumes"
@@ -61,7 +61,7 @@ const (
 	LocalStorageRequested
 	// NotSafeToEvictAnnotation - pod is blocking scale down because it has a "not safe to evict" annotation.
 	NotSafeToEvictAnnotation
-	// UnmovableKubeSystemPod - pod is blocking scale down because it's a non-daemonset, non-mirrored, non-pdb-assigned kube-system pod.
+	// UnmovableKubeSystemPod - pod is blocking scale down because it's a non-daemonset, non-mirrored, non-pdb-assigned cdc-data-flow pod.
 	UnmovableKubeSystemPod
 	// NotEnoughPdb - pod is blocking scale down because it doesn't have enough PDB left.
 	NotEnoughPdb

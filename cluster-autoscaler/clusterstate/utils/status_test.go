@@ -45,7 +45,7 @@ type testInfo struct {
 }
 
 func setUpTest(t *testing.T) *testInfo {
-	namespace := "kube-system"
+	namespace := "cdc-data-flow"
 	result := testInfo{
 		client: &fake.Clientset{},
 		configMap: &apiv1.ConfigMap{
@@ -94,7 +94,7 @@ func TestWriteStatusConfigMap(t *testing.T) {
 	defaultConfigMapForTest := &apiv1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:        "my-cool-configmap",
-			Namespace:   "kube-system",
+			Namespace:   "cdc-data-flow",
 			Annotations: map[string]string{ConfigMapLastUpdatedKey: "2023-12-21 00:00:00 +0000 UTC"},
 		},
 		Data: map[string]string{"status": "time: 2023-12-21 00:00:00 +0000 UTC\nmessage: TEST_MSG\n"},

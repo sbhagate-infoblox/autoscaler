@@ -55,7 +55,7 @@ func TestGetPodsToMove(t *testing.T) {
 		manifestPod = &apiv1.Pod{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "manifestPod",
-				Namespace: "kube-system",
+				Namespace: "cdc-data-flow",
 				Annotations: map[string]string{
 					types.ConfigMirrorAnnotationKey: "something",
 				},
@@ -64,7 +64,7 @@ func TestGetPodsToMove(t *testing.T) {
 		systemPod = &apiv1.Pod{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:            "systemPod",
-				Namespace:       "kube-system",
+				Namespace:       "cdc-data-flow",
 				OwnerReferences: GenerateOwnerReferences("rs", "ReplicaSet", "extensions/v1beta1", ""),
 			},
 		}
@@ -194,8 +194,8 @@ func TestGetPodsToMove(t *testing.T) {
 		kubeSystemRc = apiv1.ReplicationController{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "rc",
-				Namespace: "kube-system",
-				SelfLink:  "api/v1/namespaces/kube-system/replicationcontrollers/rc",
+				Namespace: "cdc-data-flow",
+				SelfLink:  "api/v1/namespaces/cdc-data-flow/replicationcontrollers/rc",
 			},
 			Spec: apiv1.ReplicationControllerSpec{
 				Replicas: &replicas,
@@ -204,7 +204,7 @@ func TestGetPodsToMove(t *testing.T) {
 		kubeSystemRcPod = &apiv1.Pod{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:            "bar",
-				Namespace:       "kube-system",
+				Namespace:       "cdc-data-flow",
 				OwnerReferences: GenerateOwnerReferences(kubeSystemRc.Name, "ReplicationController", "core/v1", ""),
 				Labels: map[string]string{
 					"k8s-app": "bar",
@@ -418,7 +418,7 @@ func TestGetPodsToMove(t *testing.T) {
 		kubeSystemSafePod = &apiv1.Pod{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "bar",
-				Namespace: "kube-system",
+				Namespace: "cdc-data-flow",
 				Annotations: map[string]string{
 					drain.PodSafeToEvictKey: "true",
 				},
@@ -448,7 +448,7 @@ func TestGetPodsToMove(t *testing.T) {
 		emptyPDB      = &policyv1.PodDisruptionBudget{}
 		kubeSystemPDB = &policyv1.PodDisruptionBudget{
 			ObjectMeta: metav1.ObjectMeta{
-				Namespace: "kube-system",
+				Namespace: "cdc-data-flow",
 			},
 			Spec: policyv1.PodDisruptionBudgetSpec{
 				MinAvailable: &one,
@@ -464,7 +464,7 @@ func TestGetPodsToMove(t *testing.T) {
 		}
 		kubeSystemFakePDB = &policyv1.PodDisruptionBudget{
 			ObjectMeta: metav1.ObjectMeta{
-				Namespace: "kube-system",
+				Namespace: "cdc-data-flow",
 			},
 			Spec: policyv1.PodDisruptionBudgetSpec{
 				MinAvailable: &one,
@@ -533,7 +533,7 @@ func TestGetPodsToMove(t *testing.T) {
 			wantDs:   []*apiv1.Pod{dsPod},
 		},
 		{
-			desc:    "Kube-system",
+			desc:    "cdc-data-flow",
 			pods:    []*apiv1.Pod{systemPod},
 			wantErr: true,
 			wantBlocking: &drain.BlockingPod{
@@ -702,7 +702,7 @@ func TestGetPodsToMove(t *testing.T) {
 			wantPods: []*apiv1.Pod{safePod},
 		},
 		{
-			desc:     "kube-system pod with PodSafeToEvict annotation",
+			desc:     "cdc-data-flow pod with PodSafeToEvict annotation",
 			pods:     []*apiv1.Pod{kubeSystemSafePod},
 			wantPods: []*apiv1.Pod{kubeSystemSafePod},
 		},
@@ -719,14 +719,14 @@ func TestGetPodsToMove(t *testing.T) {
 			wantPods: []*apiv1.Pod{rcPod},
 		},
 		{
-			desc:     "kube-system PDB with matching kube-system pod",
+			desc:     "cdc-data-flow PDB with matching cdc-data-flow pod",
 			pods:     []*apiv1.Pod{kubeSystemRcPod},
 			pdbs:     []*policyv1.PodDisruptionBudget{kubeSystemPDB},
 			rcs:      []*apiv1.ReplicationController{&kubeSystemRc},
 			wantPods: []*apiv1.Pod{kubeSystemRcPod},
 		},
 		{
-			desc:         "kube-system PDB with non-matching kube-system pod",
+			desc:         "cdc-data-flow PDB with non-matching cdc-data-flow pod",
 			pods:         []*apiv1.Pod{kubeSystemRcPod},
 			pdbs:         []*policyv1.PodDisruptionBudget{kubeSystemFakePDB},
 			rcs:          []*apiv1.ReplicationController{&kubeSystemRc},
@@ -734,14 +734,14 @@ func TestGetPodsToMove(t *testing.T) {
 			wantBlocking: &drain.BlockingPod{Pod: kubeSystemRcPod, Reason: drain.UnmovableKubeSystemPod},
 		},
 		{
-			desc:     "kube-system PDB with default namespace pod",
+			desc:     "cdc-data-flow PDB with default namespace pod",
 			pods:     []*apiv1.Pod{rcPod},
 			pdbs:     []*policyv1.PodDisruptionBudget{kubeSystemPDB},
 			rcs:      []*apiv1.ReplicationController{&rc},
 			wantPods: []*apiv1.Pod{rcPod},
 		},
 		{
-			desc:         "default namespace PDB with matching labels kube-system pod",
+			desc:         "default namespace PDB with matching labels cdc-data-flow pod",
 			pods:         []*apiv1.Pod{kubeSystemRcPod},
 			pdbs:         []*policyv1.PodDisruptionBudget{defaultNamespacePDB},
 			rcs:          []*apiv1.ReplicationController{&kubeSystemRc},

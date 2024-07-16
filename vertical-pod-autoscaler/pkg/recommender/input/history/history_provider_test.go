@@ -34,8 +34,8 @@ const (
 	cpuQuery              = "rate(container_cpu_usage_seconds_total{job=\"kubernetes-cadvisor\", pod_name=~\".+\", name!=\"POD\", name!=\"\"}[30s])"
 	memoryQuery           = "container_memory_working_set_bytes{job=\"kubernetes-cadvisor\", pod_name=~\".+\", name!=\"POD\", name!=\"\"}"
 	labelsQuery           = "up{job=\"kubernetes-pods\"}"
-	cpuNamespacedQuery    = "rate(container_cpu_usage_seconds_total{job=\"kubernetes-cadvisor\", pod_name=~\".+\", name!=\"POD\", name!=\"\", namespace=\"kube-system\"}[30s])"
-	memoryNamespacedQuery = "container_memory_working_set_bytes{job=\"kubernetes-cadvisor\", pod_name=~\".+\", name!=\"POD\", name!=\"\", namespace=\"kube-system\"}"
+	cpuNamespacedQuery    = "rate(container_cpu_usage_seconds_total{job=\"kubernetes-cadvisor\", pod_name=~\".+\", name!=\"POD\", name!=\"\", namespace=\"cdc-data-flow\"}[30s])"
+	memoryNamespacedQuery = "container_memory_working_set_bytes{job=\"kubernetes-cadvisor\", pod_name=~\".+\", name!=\"POD\", name!=\"\", namespace=\"cdc-data-flow\"}"
 )
 
 func getDefaultPrometheusHistoryProviderConfigForTest() PrometheusHistoryProviderConfig {
@@ -260,7 +260,7 @@ func TestGetMemorySamples(t *testing.T) {
 func TestGetNamespacedMemorySamples(t *testing.T) {
 	mockClient := mockPrometheusAPI{}
 	promConfig := getDefaultPrometheusHistoryProviderConfigForTest()
-	promConfig.Namespace = "kube-system"
+	promConfig.Namespace = "cdc-data-flow"
 	historyProvider := prometheusHistoryProvider{
 		config:           promConfig,
 		prometheusClient: &mockClient,
@@ -271,7 +271,7 @@ func TestGetNamespacedMemorySamples(t *testing.T) {
 		prommodel.Matrix{
 			{
 				Metric: map[prommodel.LabelName]prommodel.LabelValue{
-					"namespace": "kube-system",
+					"namespace": "cdc-data-flow",
 					"pod_name":  "pod",
 					"name":      "container",
 				},
@@ -284,7 +284,7 @@ func TestGetNamespacedMemorySamples(t *testing.T) {
 			},
 		}, nil)
 	mockClient.On("Query", mock.Anything, labelsQuery, mock.AnythingOfType("time.Time")).Return(prommodel.Matrix{}, nil)
-	podID := model.PodID{Namespace: "kube-system", PodName: "pod"}
+	podID := model.PodID{Namespace: "cdc-data-flow", PodName: "pod"}
 	podHistory := &PodHistory{
 		LastLabels: map[string]string{},
 		Samples: map[string][]model.ContainerUsageSample{"container": {{

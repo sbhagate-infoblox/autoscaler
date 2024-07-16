@@ -147,7 +147,7 @@ CA Version 0.6:
 * Allows scaling node groups to 0 (currently only in GCE/GKE, other cloud providers are coming). See: [How can I scale a node group to 0?](FAQ.md#how-can-i-scale-a-node-group-to-0)
 * Price-based expander (currently only in GCE/GKE, other cloud providers are coming). See: [What are Expanders?](FAQ.md#what-are-expanders)
 * Similar node groups are balanced (to be enabled with a flag). See: [I'm running cluster with nodes in multiple zones for HA purposes. Is that supported by Cluster Autoscaler?](FAQ.md#im-running-cluster-with-nodes-in-multiple-zones-for-ha-purposes-is-that-supported-by-cluster-autoscaler)
-* It is possible to scale-down nodes with kube-system pods if PodDisruptionBudget is provided. See: [How can I scale my cluster to just 1 node?](FAQ.md#how-can-i-scale-my-cluster-to-just-1-node)
+* It is possible to scale-down nodes with cdc-data-flow pods if PodDisruptionBudget is provided. See: [How can I scale my cluster to just 1 node?](FAQ.md#how-can-i-scale-my-cluster-to-just-1-node)
 * Automatic node group discovery on AWS (to be enabled with a flag). See: [AWS doc](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler/cloudprovider/aws).
 * CA exposes runtime metrics. See: [How can I monitor Cluster Autoscaler?](FAQ.md#how-can-i-monitor-cluster-autoscaler)
 * CA exposes an endpoint for liveness probe.
@@ -168,7 +168,7 @@ CA Version 0.5.1:
 
 CA Version 0.5:
 * CA continues to operate even if some nodes are unready and is able to scale-down them.
-* CA exports its status to kube-system/cluster-autoscaler-status config map.
+* CA exports its status to cdc-data-flow/cluster-autoscaler-status config map.
 * CA respects PodDisruptionBudgets.
 * Azure support.
 * Alpha support for dynamic config changes.
@@ -188,8 +188,8 @@ CA Version 0.3:
 Cluster Autoscaler is designed to run on Kubernetes control plane (previously referred to as master) node. This is the
 default deployment strategy on GCP.
 It is possible to run a customized deployment of Cluster Autoscaler on worker nodes, but extra care needs
-to be taken to ensure that Cluster Autoscaler remains up and running. Users can put it into kube-system
-namespace (Cluster Autoscaler doesn't scale down node with non-mirrored kube-system pods running
+to be taken to ensure that Cluster Autoscaler remains up and running. Users can put it into cdc-data-flow
+namespace (Cluster Autoscaler doesn't scale down node with non-mirrored cdc-data-flow pods running
 on them) and set a `priorityClassName: system-cluster-critical` property on your pod spec
 (to prevent your pod from being evicted).
 

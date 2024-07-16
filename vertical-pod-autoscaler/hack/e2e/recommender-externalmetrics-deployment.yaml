@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vpa-recommender
-  namespace: kube-system
+  namespace: cdc-data-flow
 spec:
   replicas: 1
   selector:

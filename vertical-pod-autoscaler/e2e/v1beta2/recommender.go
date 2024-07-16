@@ -384,7 +384,7 @@ func createVpaCRDWithContainerScalingModes(f *framework.Framework, modes ...vpa_
 }
 
 func deleteRecommender(c clientset.Interface) error {
-	namespace := "kube-system"
+	namespace := "cdc-data-flow"
 	listOptions := metav1.ListOptions{}
 	podList, err := c.CoreV1().Pods(namespace).List(context.TODO(), listOptions)
 	if err != nil {

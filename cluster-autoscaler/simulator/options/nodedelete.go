@@ -22,7 +22,7 @@ import (
 
 // NodeDeleteOptions contains various options to customize how draining will behave
 type NodeDeleteOptions struct {
-	// SkipNodesWithSystemPods is true if nodes with kube-system pods should be
+	// SkipNodesWithSystemPods is true if nodes with cdc-data-flow pods should be
 	// deleted (except for DaemonSet or mirror pods).
 	SkipNodesWithSystemPods bool
 	// SkipNodesWithLocalStorage is true if nodes with pods using local storage

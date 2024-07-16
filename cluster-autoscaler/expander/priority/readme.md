@@ -20,7 +20,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cluster-autoscaler-priority-expander
-  namespace: kube-system
+  namespace: cdc-data-flow
 data:
   priorities: |-
     10: 

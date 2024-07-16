@@ -55,7 +55,7 @@ this document:
   * [What are the parameters to CA?](#what-are-the-parameters-to-ca)
 * [Troubleshooting](#troubleshooting)
   * [I have a couple of nodes with low utilization, but they are not scaled down. Why?](#i-have-a-couple-of-nodes-with-low-utilization-but-they-are-not-scaled-down-why)
-  * [How to set PDBs to enable CA to move kube-system pods?](#how-to-set-pdbs-to-enable-ca-to-move-kube-system-pods)
+  * [How to set PDBs to enable CA to move cdc-data-flow pods?](#how-to-set-pdbs-to-enable-ca-to-move-cdc-data-flow-pods)
   * [I have a couple of pending pods, but there was no scale-up?](#i-have-a-couple-of-pending-pods-but-there-was-no-scale-up)
   * [CA doesn’t work, but it used to work yesterday. Why?](#ca-doesnt-work-but-it-used-to-work-yesterday-why)
   * [How can I check what is going on in CA ?](#how-can-i-check-what-is-going-on-in-ca-)
@@ -86,7 +86,7 @@ Cluster Autoscaler decreases the size of the cluster when some nodes are consist
 ### What types of pods can prevent CA from removing a node?
 
 * Pods with restrictive PodDisruptionBudget.
-* Kube-system pods that:
+* cdc-data-flow pods that:
   * are not run on the node by default, *
   * don't have a [pod disruption budget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/#how-disruption-budgets-work) set or their PDB is too restrictive (since CA 0.6).
 * Pods that are not backed by a controller object (so not created by deployment, replica set, job, stateful set etc). *
@@ -332,12 +332,12 @@ use the `--record-duplicated-events` command line flag.
 ### How can I scale my cluster to just 1 node?
 
 Prior to version 0.6, Cluster Autoscaler was not touching nodes that were running important
-kube-system pods like DNS, Metrics Server, Dashboard, etc. If these pods landed on different nodes,
+cdc-data-flow pods like DNS, Metrics Server, Dashboard, etc. If these pods landed on different nodes,
 CA could not scale the cluster down and the user could end up with a completely empty
 3 node cluster. In 0.6, we added an option to tell CA that some system pods can be moved around.
 If the user configures a [PodDisruptionBudget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/)
-for the kube-system pod, then the default strategy of not touching the node running this pod
-is overridden with PDB settings. So, to enable kube-system pods migration, one should set
+for the cdc-data-flow pod, then the default strategy of not touching the node running this pod
+is overridden with PDB settings. So, to enable cdc-data-flow pods migration, one should set
 [minAvailable](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#poddisruptionbudget-v1-policy)
 to 0 (or <= N if there are N+1 pod replicas.)
 See also [I have a couple of nodes with low utilization, but they are not scaled down. Why?](#i-have-a-couple-of-nodes-with-low-utilization-but-they-are-not-scaled-down-why)
@@ -769,7 +769,7 @@ The following startup parameters are supported for cluster autoscaler:
 | `kubernetes` | Kubernetes API Server location. Leave blank for default | ""
 | `kubeconfig` | Path to kubeconfig file with authorization and API Server location information | ""
 | `cloud-config` | The path to the cloud provider configuration file.  Empty string for no configuration file | ""
-| `namespace` | Namespace in which cluster-autoscaler run | "kube-system"
+| `namespace` | Namespace in which cluster-autoscaler run | "cdc-data-flow"
 | `enforce-node-group-min-size` | Should CA scale up the node group to the configured min size if needed | false
 | `scale-down-enabled` | Should CA scale down the cluster | true
 | `scale-down-delay-after-add` | How long after scale up that scale down evaluation resumes | 10 minutes
@@ -817,7 +817,7 @@ The following startup parameters are supported for cluster autoscaler:
 | `leader-elect-retry-period` | The duration the clients should wait between attempting acquisition and renewal of a leadership.<br>This is only applicable if leader election is enabled | 2 seconds
 | `leader-elect-resource-lock` | The type of resource object that is used for locking during leader election.<br>Supported options are `leases` (default), `endpoints`, `endpointsleases`, `configmaps`, and `configmapsleases` | "leases"
 | `aws-use-static-instance-list` | Should CA fetch instance types in runtime or use a static list. AWS only | false
-| `skip-nodes-with-system-pods` | If true cluster autoscaler will never delete nodes with pods from kube-system (except for [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) or [mirror pods](https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/)) | true
+| `skip-nodes-with-system-pods` | If true cluster autoscaler will never delete nodes with pods from cdc-data-flow (except for [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) or [mirror pods](https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/)) | true
 | `skip-nodes-with-local-storage`| If true cluster autoscaler will never delete nodes with pods with local storage, e.g. EmptyDir or HostPath | true
 | `skip-nodes-with-custom-controller-pods` | If true cluster autoscaler will never delete nodes with pods owned by custom controllers | true
 | `min-replica-count` | Minimum number or replicas that a replica set or replication controller should have to allow their pods deletion in scale down | 0
@@ -853,12 +853,12 @@ CA doesn't remove underutilized nodes if they are running pods [that it shouldn'
 
 * make sure `--scale-down-enabled` parameter in command is not set to false
 
-### How to set PDBs to enable CA to move kube-system pods?
+### How to set PDBs to enable CA to move cdc-data-flow pods?
 
-By default, kube-system pods prevent CA from removing nodes on which they are running. Users can manually add PDBs for the kube-system pods that can be safely rescheduled elsewhere:
+By default, cdc-data-flow pods prevent CA from removing nodes on which they are running. Users can manually add PDBs for the cdc-data-flow pods that can be safely rescheduled elsewhere:
 
 ```
-kubectl create poddisruptionbudget <pdb name> --namespace=kube-system --selector app=<app name> --max-unavailable 1
+kubectl create poddisruptionbudget <pdb name> --namespace=cdc-data-flow --selector app=<app name> --max-unavailable 1
 ```
 
 Here's how to do it for some common pods:
@@ -912,7 +912,7 @@ When using separate node groups per zone, the `--balance-similar-node-groups` fl
 
 Most likely it's due to a problem with the cluster. Steps to debug:
 
-* Check if cluster autoscaler is up and running. In version 0.5 and later, it periodically publishes the kube-system/cluster-autoscaler-status config map. Check last update time annotation. It should be no more than 3 min (usually 10 sec old).
+* Check if cluster autoscaler is up and running. In version 0.5 and later, it periodically publishes the cdc-data-flow/cluster-autoscaler-status config map. Check last update time annotation. It should be no more than 3 min (usually 10 sec old).
 
 * Check in the above config map if cluster and node groups are in the healthy state. If not, check if there are unready nodes. If some nodes appear unready despite being Ready in the Node object, check `resourceUnready` count. If there are any nodes marked as `resourceUnready`, it is most likely a problem with the device driver failing to install a new resource (e.g. GPU). `resourceUnready` count is only available in CA version 1.24 and later.
 
@@ -928,7 +928,7 @@ If both the cluster and CA appear healthy:
 
 * Check events added by CA to the pod object.
 
-* Check events on the kube-system/cluster-autoscaler-status config map.
+* Check events on the cdc-data-flow/cluster-autoscaler-status config map.
 
 * If you see failed attempts to add nodes, check if you have sufficient quota on your cloud provider side. If VMs are created, but nodes fail to register, it may be a symptom of networking issues.
 
@@ -937,14 +937,14 @@ If both the cluster and CA appear healthy:
 There are three options:
 
 * Logs on the control plane (previously referred to as master) nodes, in `/var/log/cluster-autoscaler.log`.
-* Cluster Autoscaler 0.5 and later publishes kube-system/cluster-autoscaler-status config map.
-  To see it, run `kubectl get configmap cluster-autoscaler-status -n kube-system
+* Cluster Autoscaler 0.5 and later publishes cdc-data-flow/cluster-autoscaler-status config map.
+  To see it, run `kubectl get configmap cluster-autoscaler-status -n cdc-data-flow
   -o yaml`.
 * Events:
     * on pods (particularly those that cannot be scheduled, or on underutilized
       nodes),
     * on nodes,
-    * on kube-system/cluster-autoscaler-status config map.
+    * on cdc-data-flow/cluster-autoscaler-status config map.
 
 ### How can I increase the information that the CA is logging?
 
@@ -984,7 +984,7 @@ describing this action. It will also create events for some serious
 errors. Below is the non-exhaustive list of events emitted by CA (new events may
 be added in future):
 
-* on kube-system/cluster-autoscaler-status config map:
+* on cdc-data-flow/cluster-autoscaler-status config map:
     * ScaledUpGroup - CA increased the size of node group, gives
       both old and new group size.
     * ScaleDownEmpty - CA removed a node with no pods running on it (except

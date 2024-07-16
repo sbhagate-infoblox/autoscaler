@@ -67,7 +67,7 @@ func TestDrainable(t *testing.T) {
 			pod: &apiv1.Pod{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "bar",
-					Namespace: "kube-system",
+					Namespace: "cdc-data-flow",
 					Annotations: map[string]string{
 						drain.PodSafeToEvictKey: "true",
 					},

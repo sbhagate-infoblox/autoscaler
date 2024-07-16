@@ -62,8 +62,8 @@ func TestDrainable(t *testing.T) {
 		kubeSystemRc = apiv1.ReplicationController{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "rc",
-				Namespace: "kube-system",
-				SelfLink:  "api/v1/namespaces/kube-system/replicationcontrollers/rc",
+				Namespace: "cdc-data-flow",
+				SelfLink:  "api/v1/namespaces/cdc-data-flow/replicationcontrollers/rc",
 			},
 			Spec: apiv1.ReplicationControllerSpec{
 				Replicas: &replicas,
@@ -73,7 +73,7 @@ func TestDrainable(t *testing.T) {
 		kubeSystemRcPod = &apiv1.Pod{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:            "bar",
-				Namespace:       "kube-system",
+				Namespace:       "cdc-data-flow",
 				OwnerReferences: test.GenerateOwnerReferences(kubeSystemRc.Name, "ReplicationController", "core/v1", ""),
 				Labels: map[string]string{
 					"k8s-app": "bar",
@@ -88,7 +88,7 @@ func TestDrainable(t *testing.T) {
 
 		kubeSystemPDB = &policyv1.PodDisruptionBudget{
 			ObjectMeta: metav1.ObjectMeta{
-				Namespace: "kube-system",
+				Namespace: "cdc-data-flow",
 			},
 			Spec: policyv1.PodDisruptionBudgetSpec{
 				Selector: &metav1.LabelSelector{
@@ -101,7 +101,7 @@ func TestDrainable(t *testing.T) {
 
 		kubeSystemFakePDB = &policyv1.PodDisruptionBudget{
 			ObjectMeta: metav1.ObjectMeta{
-				Namespace: "kube-system",
+				Namespace: "cdc-data-flow",
 			},
 			Spec: policyv1.PodDisruptionBudgetSpec{
 				Selector: &metav1.LabelSelector{
@@ -140,24 +140,24 @@ func TestDrainable(t *testing.T) {
 			rcs:  []*apiv1.ReplicationController{&rc},
 			pdbs: []*policyv1.PodDisruptionBudget{emptyPDB},
 		},
-		"kube-system PDB with matching kube-system pod": {
+		"cdc-data-flow PDB with matching cdc-data-flow pod": {
 			pod:  kubeSystemRcPod,
 			rcs:  []*apiv1.ReplicationController{&kubeSystemRc},
 			pdbs: []*policyv1.PodDisruptionBudget{kubeSystemPDB},
 		},
-		"kube-system PDB with non-matching kube-system pod": {
+		"cdc-data-flow PDB with non-matching cdc-data-flow pod": {
 			pod:        kubeSystemRcPod,
 			rcs:        []*apiv1.ReplicationController{&kubeSystemRc},
 			pdbs:       []*policyv1.PodDisruptionBudget{kubeSystemFakePDB},
 			wantReason: drain.UnmovableKubeSystemPod,
 			wantError:  true,
 		},
-		"kube-system PDB with default namespace pod": {
+		"cdc-data-flow PDB with default namespace pod": {
 			pod:  rcPod,
 			rcs:  []*apiv1.ReplicationController{&rc},
 			pdbs: []*policyv1.PodDisruptionBudget{kubeSystemPDB},
 		},
-		"default namespace PDB with matching labels kube-system pod": {
+		"default namespace PDB with matching labels cdc-data-flow pod": {
 			pod:        kubeSystemRcPod,
 			rcs:        []*apiv1.ReplicationController{&kubeSystemRc},
 			pdbs:       []*policyv1.PodDisruptionBudget{defaultNamespacePDB},
